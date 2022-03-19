@@ -52,6 +52,7 @@ namespace sfr {
         bool turn_on = false;
         bool turn_off = false;
         bool powered = false;
+        bool deployed = false;
 
         // Initialization
         camera_init_mode_type init_mode = camera_init_mode_type::awaiting;

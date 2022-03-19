@@ -13,7 +13,7 @@ RockblockSimulator::RockblockSimulator()
     bin_transmit = 0;
     signal = 5;
     insert("0B000100000000000000");
-    // insert("07000100000000000000");
+    insert("07000100000000000000");
     // insert("01000000000000000000");
     //  insert("01000100000000000000");
     //  insert("02000100000000000000");

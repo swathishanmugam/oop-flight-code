@@ -56,6 +56,7 @@ namespace sfr {
         extern bool turn_on;
         extern bool turn_off;
         extern bool powered;
+        extern bool deployed;
 
         extern camera_init_mode_type init_mode;
         extern uint8_t start_progress;
