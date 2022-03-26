@@ -5,7 +5,7 @@ PhotoresistorMonitor::PhotoresistorMonitor(unsigned int offset) : TimedControlTa
 void PhotoresistorMonitor::execute()
 {
     int val = analogRead(constants::photoresistor::pin);
-#ifdef VERBOSE
+#ifdef VERBOSE_SENSOR
     Serial.print("Photoresistor: ");
     Serial.print(val);
     Serial.println(" (0-1023 scale)");

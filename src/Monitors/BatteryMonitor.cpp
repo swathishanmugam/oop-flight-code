@@ -18,7 +18,7 @@ void BatteryMonitor::execute()
     }
     float sum = std::accumulate(sfr::battery::voltage_buffer.begin(), sfr::battery::voltage_buffer.end(), 0.0);
     sfr::battery::voltage_average->set_value(sum / sfr::battery::voltage_buffer.size());
-#ifdef VERBOSE
+#ifdef VERBOSE_SENSOR
     Serial.print("Batt Voltage: ");
     Serial.print(sfr::battery::voltage_average->get_value());
     Serial.println(" V");

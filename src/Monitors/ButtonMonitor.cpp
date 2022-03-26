@@ -5,7 +5,7 @@ ButtonMonitor::ButtonMonitor(unsigned int offset) : TimedControlTask<void>(offse
 void ButtonMonitor::execute()
 {
     sfr::button::pressed = digitalRead(constants::button::button_pin);
-#ifdef VERBOSE
+#ifdef VERBOSE_SENSOR
     Serial.print("Button: ");
     Serial.print(sfr::button::pressed);
     Serial.println("(1 yes, 0 no)");

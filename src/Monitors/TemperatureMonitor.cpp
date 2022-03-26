@@ -16,7 +16,7 @@ void TemperatureMonitor::execute()
     }
     float sum = std::accumulate(sfr::temperature::temp_c_buffer.begin(), sfr::temperature::temp_c_buffer.end(), 0.0);
     sfr::temperature::temp_c_average->set_value(sum / sfr::temperature::temp_c_buffer.size());
-#ifdef VERBOSE
+#ifdef VERBOSE_SENSOR
     Serial.print("Temp: ");
     Serial.print(sfr::temperature::temp_c_average->get_value());
     Serial.println(" C");

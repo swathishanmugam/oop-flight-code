@@ -19,7 +19,7 @@ void CurrentMonitor::execute()
     }
     float sum = std::accumulate(sfr::current::solar_current_buffer.begin(), sfr::current::solar_current_buffer.end(), (float)0.0);
     sfr::current::solar_current_average->set_value(sum / sfr::current::solar_current_buffer.size());
-#ifdef VERBOSE
+#ifdef VERBOSE_SENSOR
     Serial.print("Currrent: ");
     Serial.print(sfr::current::solar_current_average->get_value());
     Serial.println(" mA");
