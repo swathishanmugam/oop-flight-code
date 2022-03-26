@@ -218,20 +218,28 @@ void RockblockControlTask::dispatch_send_message()
     }
     uint16_t checksum = 0;
 #ifdef VERBOSE
+
     Serial.print("SENT: ");
 #endif
-    for (size_t i = 0; i < constants::rockblock::packet_size; ++i) {
-        if (sfr::rockblock::downlink_camera == false) {
+
+    // for (size_t i = 0; i < constants::rockblock::packet_size; ++i) {
+    // }
+    if (sfr::rockblock::downlink_camera == false) {
 #ifdef VERBOSE
+        for (size_t i = 0; i < sfr::rockblock::report.size(); ++i) {
+            Serial.print("Normal Report Byte: ");
             if (sfr::rockblock::report[i] < 16) {
                 Serial.print(0);
             }
-            Serial.print(sfr::rockblock::report[i], HEX);
+            Serial.println(sfr::rockblock::report[i], HEX);
 #endif
             sfr::rockblock::serial.write(sfr::rockblock::report[i]);
             checksum += (uint16_t)sfr::rockblock::report[i];
-        } else {
+        }
+    } else {
 #ifdef VERBOSE
+        for (size_t i = 0; i < sfr::rockblock::camera_report.size(); ++i) {
+            Serial.print("Camera Report Byte: ");
             if (sfr::rockblock::camera_report[i] < 16) {
                 Serial.print(0);
             }
@@ -241,6 +249,7 @@ void RockblockControlTask::dispatch_send_message()
             checksum += (uint16_t)sfr::rockblock::camera_report[i];
         }
     }
+
 #ifdef VERBOSE
     Serial.println();
     Serial.print("SENT: ");
