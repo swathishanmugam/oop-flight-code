@@ -6,11 +6,13 @@ void ButtonMonitor::execute()
 {
     sfr::button::pressed = digitalRead(constants::button::button_pin);
 
-    if (!sfr::button::pressed && sfr::camera::powered == true && sfr::camera::take_photo == false && sfr::camera::deployed == false) {
-        delay(110);
-        sfr::camera::take_photo = true;
-        Serial.println("Button released, taking photo!");
-        sfr::camera::deployed = true;
+    if (!sfr::button::pressed) {
+        Serial.print("button activation time: ");
+        Serial.println(millis());
+        //delay(110);
+        //sfr::camera::take_photo = true;
+        //Serial.println("Button released, taking photo!");
+        //sfr::camera::deployed = true;
     }
 
 #ifdef VERBOSE

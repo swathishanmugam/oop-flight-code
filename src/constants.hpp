@@ -17,7 +17,7 @@ namespace constants {
         constexpr int collect = 3;
     }
     namespace photoresistor {
-        constexpr int pin = 38;
+        constexpr int pin = 17;
         constexpr int light_val = 150;
     } // namespace photoresistor
     namespace burnwire {
@@ -431,7 +431,7 @@ namespace constants {
     namespace button
     {
         // low when door is opened
-        constexpr int button_pin = 37;
+        constexpr int button_pin = 31;
     } // namespace button
     namespace imu {
         constexpr float gravity = 9.80665;
