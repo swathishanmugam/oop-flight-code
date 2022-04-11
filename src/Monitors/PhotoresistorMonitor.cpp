@@ -5,13 +5,15 @@ PhotoresistorMonitor::PhotoresistorMonitor(unsigned int offset) : TimedControlTa
 void PhotoresistorMonitor::execute()
 {
     int val = analogRead(constants::photoresistor::pin);
-    sfr::button::pressed = digitalRead(constants::button::button_pin);
+    //sfr::button::pressed = digitalRead(constants::button::button_pin);
 
 #ifdef VERBOSE
     Serial.print("Photoresistor: ");
     Serial.print(val);
     Serial.println(" (0-1023 scale)");
 #endif
+    Serial.print("Photoresistor: ");
+    Serial.println(val);  
     if (val > constants::photoresistor::light_val) {
         sfr::photoresistor::covered = false;
         Serial.print("photoresistor activation time: ");
@@ -24,6 +26,7 @@ void PhotoresistorMonitor::execute()
         Serial.println("Button trigger time: ");
         Serial.print(millis());
     }
+    
 
     /*
         if (!sfr::photoresistor::covered && sfr::camera::powered == true && sfr::camera::take_photo == false && sfr::camera::deployed == false) {
