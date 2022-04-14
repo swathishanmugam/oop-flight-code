@@ -221,8 +221,11 @@ void RockblockControlTask::dispatch_send_message()
     Serial.print("SENT: ");
 #endif
 
-    if (sfr::rockblock::downlink_camera == false) {
-        for (size_t i = 0; i < sfr::rockblock::report.size(); ++i) {
+    for (size_t i = 0; i < constants::rockblock::packet_size; ++i) {
+        if (sfr::rockblock::downlink_camera == false) {
+
+            // if (sfr::rockblock::downlink_camera == false) {
+            //     for (size_t i = 0; i < sfr::rockblock::report.size(); ++i) {
 #ifdef VERBOSE
             if (sfr::rockblock::report[i] < 16) {
                 Serial.print(0);
@@ -231,9 +234,11 @@ void RockblockControlTask::dispatch_send_message()
 #endif
             sfr::rockblock::serial.write(sfr::rockblock::report[i]);
             checksum += (uint16_t)sfr::rockblock::report[i];
-        }
-    } else {
-        for (size_t i = 0; i < sfr::rockblock::camera_report.size(); ++i) {
+        } else {
+            // }
+            // else
+            // {
+            //     for (size_t i = 0; i < sfr::rockblock::camera_report.size(); ++i) {
 #ifdef VERBOSE
             if (sfr::rockblock::camera_report[i] < 16) {
                 Serial.print(0);
