@@ -17,7 +17,8 @@ void AliveSignal::dispatch()
 }
 
 void LowPowerAliveSignal::transition_to() {}
-void LowPowerAliveSignal::dispatch() {
+void LowPowerAliveSignal::dispatch()
+{
     exit_lp(sfr::mission::aliveSignal);
     exit_signal_phase(sfr::mission::lowPowerDetumbleSpin);
 }
@@ -37,25 +38,27 @@ void LowPowerDetumbleSpin::dispatch()
 }
 
 void Normal::transition_to() {}
-void Normal::dispatch(){
-
+void Normal::dispatch()
+{
 }
 
 void LowPower::transition_to() {}
-void LowPower::dispatch(){
-
+void LowPower::dispatch()
+{
 }
 
-void exit_signal_phase(MissionMode *mode){
+void exit_signal_phase(MissionMode *mode)
+{
     if (sfr::aliveSignal::num_downlink_failures >= sfr::aliveSignal::max_downlink_failures || sfr::aliveSignal::downlinked) {
         sfr::mission::current_mode = mode;
-    }   
+    }
 }
 
-void exit_detumble_phase(MissionMode *mode){
-    if ((sfr::imu::gyro_z_average->is_valid() && sfr::imu::gyro_z_average->get_value() >= sfr::detumble::stable_gyro_z) || (millis()-sfr::detumble::start_time >= sfr::detumble::max_time)) {
+void exit_detumble_phase(MissionMode *mode)
+{
+    if ((sfr::imu::gyro_z_average->is_valid() && sfr::imu::gyro_z_average->get_value() >= sfr::detumble::stable_gyro_z) || (millis() - sfr::detumble::start_time >= sfr::detumble::max_time)) {
         sfr::mission::current_mode = mode;
-    }   
+    }
 }
 
 void enter_lp(MissionMode *lp_mode)
@@ -71,5 +74,3 @@ void exit_lp(MissionMode *reg_mode)
         sfr::mission::current_mode = reg_mode;
     }
 }
-
-
