@@ -166,6 +166,8 @@ namespace sfr {
         extern int start_time;
         extern bool last_timed_out;
         extern int num_downlinks;
+
+        extern bool done_downlinking;
     } // namespace rockblock
     namespace imu {
         extern sensor_mode_type mode;

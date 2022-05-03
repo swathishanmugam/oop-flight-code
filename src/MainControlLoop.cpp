@@ -58,7 +58,7 @@ void MainControlLoop::execute()
     Pins::setPinState(constants::camera::rx, LOW);
     Pins::setPinState(constants::camera::tx, LOW);
    
-    if((millis() - start_time) > (2*constants::time::one_minute)){
+    if((millis() - start_time) > (2*constants::time::one_minute) && !sfr::rockblock::done_downlinking){
         Serial.println("attempting to downlink");
         sfr::rockblock::rockblock_ready_status = true;   
         rockblock_control_task.execute_on_time();   

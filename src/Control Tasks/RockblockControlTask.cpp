@@ -301,10 +301,8 @@ void RockblockControlTask::dispatch_process_mo_status()
 {
     if (sfr::rockblock::commas[0] > 1) {
         Serial.println("SAT INFO: there is another character");
-        while(true){
-            Serial.println("sleeping");
-            Pins::setPinState(constants::rockblock::sleep_pin, LOW);
-        }
+        sfr::rockblock::done_downlinking = true;
+        
         transition_to(rockblock_mode_type::send_signal_strength_mo);
     } else if (sfr::rockblock::buffer[0] != '0' && sfr::rockblock::buffer[0] != '1' && sfr::rockblock::buffer[0] != '2') {
         Serial.println("SAT INFO: mo status is greater than 2");

@@ -181,6 +181,8 @@ namespace sfr {
         int start_time = 0;
         bool last_timed_out = false;
         int num_downlinks = 2;
+
+        bool done_downlinking = false;
     } // namespace rockblock
     namespace imu {
         sensor_mode_type mode = sensor_mode_type::init;
