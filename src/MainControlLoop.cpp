@@ -22,12 +22,13 @@ MainControlLoop::MainControlLoop()
       mission_manager(constants::timecontrol::mission_manager_offset)
 {
     delay(1000);
-    sfr::mission::boot->transition_to();
+    start_time = millis();
 }
 
 void MainControlLoop::execute()
 {
     delay(200);
+
     faults::fault_1 = 0;
     faults::fault_2 = 0;
     faults::fault_3 = 0;
@@ -36,7 +37,6 @@ void MainControlLoop::execute()
 
     mission_manager.execute_on_time();
 
-    acs_monitor.execute_on_time();
     battery_monitor.execute_on_time();
     button_monitor.execute_on_time();
     camera_report_monitor.execute_on_time();
@@ -49,8 +49,24 @@ void MainControlLoop::execute()
     rockblock_report_monitor.execute_on_time();
     temperature_monitor.execute_on_time();
 
-    acs_control_task.execute_on_time();
     burnwire_control_task.execute_on_time();
-    camera_control_task.execute_on_time();
-    rockblock_control_task.execute_on_time();
+    //rockblock_control_task.execute_on_time();  
+
+    Pins::setPinState(constants::camera::power_on_pin, LOW);
+    pinMode(constants::camera::rx, OUTPUT);
+    pinMode(constants::camera::tx, OUTPUT);
+    Pins::setPinState(constants::camera::rx, LOW);
+    Pins::setPinState(constants::camera::tx, LOW);
+   
+    if((millis() - start_time) > (2*constants::time::one_minute)){
+        Serial.println("attempting to downlink");
+        sfr::rockblock::rockblock_ready_status = true;   
+        rockblock_control_task.execute_on_time();   
+    } else {
+        Serial.println("sleeping");
+        Pins::setPinState(constants::rockblock::sleep_pin, LOW);
+        sfr::rockblock::mode = rockblock_mode_type::standby;
+    }
+
+    
 }

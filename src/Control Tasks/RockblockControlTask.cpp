@@ -151,11 +151,12 @@ void RockblockControlTask::dispatch_await_signal_strength()
         char signal = sfr::rockblock::serial.read();
         Serial.print("SAT INFO: signal level ");
         Serial.println(signal);
-        if (signal == '3' || signal == '4' || signal == '5') {
+        transition_to(rockblock_mode_type::send_flow_control);
+        /*if (signal == '3' || signal == '4' || signal == '5') {
             transition_to(rockblock_mode_type::send_flow_control);
         } else {
             transition_to(rockblock_mode_type::send_signal_strength);
-        }
+        }*/
     }
 }
 
@@ -300,6 +301,10 @@ void RockblockControlTask::dispatch_process_mo_status()
 {
     if (sfr::rockblock::commas[0] > 1) {
         Serial.println("SAT INFO: there is another character");
+        while(true){
+            Serial.println("sleeping");
+            Pins::setPinState(constants::rockblock::sleep_pin, LOW);
+        }
         transition_to(rockblock_mode_type::send_signal_strength_mo);
     } else if (sfr::rockblock::buffer[0] != '0' && sfr::rockblock::buffer[0] != '1' && sfr::rockblock::buffer[0] != '2') {
         Serial.println("SAT INFO: mo status is greater than 2");
@@ -324,11 +329,12 @@ void RockblockControlTask::dispatch_await_signal_strength_mo()
         char signal = sfr::rockblock::serial.read();
         Serial.print("SAT INFO: signal level ");
         Serial.println(signal);
-        if (signal == '3' || signal == '4' || signal == '5') {
+        transition_to(rockblock_mode_type::send_response);
+        /*if (signal == '3' || signal == '4' || signal == '5') {
             transition_to(rockblock_mode_type::send_response);
         } else {
             transition_to(rockblock_mode_type::send_signal_strength_mo);
-        }
+        }*/
     }
 }
 
