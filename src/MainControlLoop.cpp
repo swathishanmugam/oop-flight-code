@@ -5,6 +5,8 @@ MainControlLoop::MainControlLoop()
 {
     delay(1000);
     boot_initialization();
+    sfr::camera::take_photo = true;
+    sfr::camera::turn_on = true;
 }
 
 void MainControlLoop::execute()
@@ -13,6 +15,8 @@ void MainControlLoop::execute()
     faults::fault_1 = 0;
     faults::fault_2 = 0;
     faults::fault_3 = 0;
+
+    sfr::rockblock::downlink_period = constants::time::two_days;
 
     clock_manager.execute();
 
