@@ -50,7 +50,6 @@ void MainControlLoop::execute()
     temperature_monitor.execute_on_time();
 
     burnwire_control_task.execute_on_time();
-    //rockblock_control_task.execute_on_time();  
 
     Pins::setPinState(constants::camera::power_on_pin, LOW);
     pinMode(constants::camera::rx, OUTPUT);
@@ -68,5 +67,4 @@ void MainControlLoop::execute()
         sfr::rockblock::mode = rockblock_mode_type::standby;
     }
 
-    
 }
