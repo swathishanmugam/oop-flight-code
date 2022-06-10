@@ -105,12 +105,17 @@ void ACSMonitor::IMUOffset(float temp, float voltage, float pwm1, float pwm2, fl
     + 0.0000069097524971878865738986012778877*pow(temp, 3) - 1.7573124306246634684924856628641; 
     /*******************************************/
 
-    /*Total Offsets*/
+    /*Total Soft Iron Offsets*/
     float xoffset = vol_1X * pwm1_X+ vol_2X * pwm2_X + vol_3X * pwm3_X + temp_x
     float yoffset = vol_1Y * pwm1_Y + vol_2Y * pwm2_Y + vol_3Y * pwm3_Y + temp_y
     float yoffset = vol_1Z * pwm1_Z + vol_2Z * pwm2_Z + vol_3Z * pwm3_Z + temp_z
     /*******************************************/
-    /*Assumed that we can just subtract the offsets*/
+    /*Add in Hard-Iron Offsets*/
+    xoffset += -13.65
+    yoffset += 36.058
+    zoffset += 6.928
+    /*******************************************/
+    /* Finally, adjust magnetometer readings*/
     mag_x -= xoffset
     mag_y -= yoffset
     mag_z -= zoffset
