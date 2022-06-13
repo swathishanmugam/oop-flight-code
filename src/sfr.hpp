@@ -283,12 +283,12 @@ namespace sfr {
         extern bool in_sun;
     } // namespace current
     namespace acs {
-        extern float current1;
-        extern float current2;
-        extern float current3;
-        extern float pwm1;
-        extern float pwm2;
-        extern float pwm3;
+        extern float currentX;
+        extern float currentY;
+        extern float currentZ;
+        extern float pwmX;
+        extern float pwmY;
+        extern float pwmZ;
         extern simple_acs_type mag;
         extern unsigned long max_no_communication;
         extern float on_time;

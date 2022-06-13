@@ -303,12 +303,12 @@ namespace sfr {
     } // namespace current
 
     namespace acs {
-        float current1 = 0;
-        float current2 = 0;
-        float current3 = 0;
-        float pwm1 = 0;
-        float pwm2 = 0;
-        float pwm3 = 0;
+        float currentX = 0;
+        float currentY = 0;
+        float currentZ = 0;
+        float pwmX = 0;
+        float pwmY = 0;
+        float pwmZ = 0;
         simple_acs_type mag = simple_acs_type::x;
         unsigned long max_no_communication = 0;
 

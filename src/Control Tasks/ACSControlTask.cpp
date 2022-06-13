@@ -7,9 +7,9 @@ ACSControlTask::ACSControlTask(unsigned int offset)
 
 void ACSControlTask::execute()
 {
-    ACSWrite(constants::acs::xtorqorder, sfr::acs::current1, constants::acs::xout1, constants::acs::xout2, constants::acs::xPWMpin);
-    ACSWrite(constants::acs::ytorqorder, sfr::acs::current2, constants::acs::yout1, constants::acs::yout2, constants::acs::yPWMpin);
-    ACSWrite(constants::acs::ztorqorder, sfr::acs::current3, constants::acs::zout1, constants::acs::zout2, constants::acs::zPWMpin);
+    ACSWrite(constants::acs::xtorqorder, sfr::acs::currentX, constants::acs::xout1, constants::acs::xout2, constants::acs::xPWMpin);
+    ACSWrite(constants::acs::ytorqorder, sfr::acs::currentY, constants::acs::yout1, constants::acs::yout2, constants::acs::yPWMpin);
+    ACSWrite(constants::acs::ztorqorder, sfr::acs::currentZ, constants::acs::zout1, constants::acs::zout2, constants::acs::zPWMpin);
 }
 
 int ACSControlTask::current2PWM(float current)
