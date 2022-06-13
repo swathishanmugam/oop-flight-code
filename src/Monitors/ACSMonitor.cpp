@@ -3,19 +3,21 @@
 ACSMonitor::ACSMonitor(unsigned int offset)
     : TimedControlTask<void>(offset)
 {
-    rtObj.initialize();
+    starshotObj.initialize(constants::acs::kane_damper_c, constants::acs::kane_Id,
+    constants::acs::ampfactor,constants::acs::max_current,constants::acs::csarea,
+    constants::acs::num_loops,constants::acs::wdx,constants::acs::wdy,constants::acs::wdz); 
 }
 
 void ACSMonitor::execute()
 {
-    rtObj.rtU.angularvelocity[0] = sfr::imu::gyro_x * 3.14159 / 180.0;
-    rtObj.rtU.angularvelocity[1] = sfr::imu::gyro_y * 3.14159 / 180.0;
-    rtObj.rtU.angularvelocity[2] = sfr::imu::gyro_z * 3.14159 / 180.0;
+    starshotObj.rtU.w[0] = sfr::imu::gyro_x * 3.14159 / 180.0;
+    starshotObj.rtU.w[1] = sfr::imu::gyro_y * 3.14159 / 180.0;
+    starshotObj.rtU.w[2] = sfr::imu::gyro_z * 3.14159 / 180.0;
     IMUOffset(sfr::temperature::temp_c, sfr::battery::voltage, sfr::acs::pwmX, sfr::acs::pwmY, sfr::acs::pwmZ);
-    rtObj.rtU.Bfield_body[0] = sfr::imu::mag_x;
-    rtObj.rtU.Bfield_body[1] = sfr::imu::mag_y;
-    rtObj.rtU.Bfield_body[2] = sfr::imu::mag_z;
-    rtObj.step();
+    starshotObj.rtU.magneticfield[0] = sfr::imu::mag_x;
+    starshotObj.rtU.magneticfield[1] = sfr::imu::mag_y;
+    starshotObj.rtU.magneticfield[2] = sfr::imu::mag_z;
+    starshotObj.step();
 
     /*if(sfr::fault::check_acc_x && sfr::fault::check_acc_y && sfr::acs::mode != acs_mode_type::off){
         if(sfr::imu::gyro_x < 0 && sfr::imu::gyro_y < 0){
@@ -25,24 +27,25 @@ void ACSMonitor::execute()
             sfr::acs::mode = acs_mode_type::detumble;
         }
     }
+    */
 
     switch(sfr::acs::mode){
         case acs_mode_type::detumble:
-            sfr::acs::currentX = rtObj.rtY.detumble[0];
-            sfr::acs::currentY = rtObj.rtY.detumble[1];
-            sfr::acs::currentZ = rtObj.rtY.detumble[2];
+            sfr::acs::currentX = starshotObj.rtY.detumble[0];
+            sfr::acs::currentY = starshotObj.rtY.detumble[1];
+            sfr::acs::currentZ = starshotObj.rtY.detumble[2];
             break;
         case acs_mode_type::point:
-            sfr::acs::currentX = rtObj.rtY.point[0];
-            sfr::acs::currentY = rtObj.rtY.point[1];
-            sfr::acs::currentZ = rtObj.rtY.point[2];
+            sfr::acs::currentX = starshotObj.rtY.point[0];
+            sfr::acs::currentY = starshotObj.rtY.point[1];
+            sfr::acs::currentZ = starshotObj.rtY.point[2];
             break;
         case acs_mode_type::off:
             sfr::acs::currentX = 0;
             sfr::acs::currentY = 0;
             sfr::acs::currentZ = 0;
             break;
-    }*/
+    }
 }
 
 void ACSMonitor::IMUOffset(float temp, float voltage, float pwmX, float pwmY, float pwmZ)

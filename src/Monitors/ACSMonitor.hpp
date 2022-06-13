@@ -9,7 +9,7 @@ public:
     ACSMonitor(unsigned int offset);
     void execute();
     void IMUOffset(float temp, float voltage, float pwmX, float pwmY, float pwmZ);
-    StarshotACS0ModelClass rtObj;
+    StarshotACSModelClass starshotObj;
 };
 
 #endif

@@ -3,24 +3,24 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: StarshotACS0_data.cpp
+// File: StarshotACS_data.cpp
 //
-// Code generated for Simulink model 'StarshotACS0'.
+// Code generated for Simulink model 'StarshotACS'.
 //
-// Model version                  : 1.117
-// Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
-// C/C++ source code generated on : Wed Apr 25 16:25:06 2018
+// Model version                  : 10.28
+// Simulink Coder version         : 9.6 (R2021b) 14-May-2021
+// C/C++ source code generated on : Sun Jun  5 03:57:16 2022
 //
 // Target selection: ert.tlc
-// Embedded hardware selection: ARM Compatible->ARM Cortex
+// Embedded hardware selection: ARM Compatible->ARM Cortex-M
 // Code generation objectives:
 //    1. Execution efficiency
 //    2. RAM efficiency
 // Validation result: Not run
 //
-#include "StarshotACS0.h"
+#include "StarshotACS.h"
 
-// Invariant block signals (auto storage)
+// Invariant block signals (default storage)
 const ConstB rtConstB = {
   {
     0.0,
@@ -36,8 +36,8 @@ const ConstB rtConstB = {
   // '<S10>/Vector Concatenate'
 };
 
-// Constant parameters (auto storage)
-const ConstP rtConstP = {
+// Constant parameters (default storage)
+const ConstPacs rtConstPacs = {
   // Expression: [1 0 0;0 1 0;0 0 1]
   //  Referenced by: '<S2>/Identity matrix'
 
@@ -49,3 +49,4 @@ const ConstP rtConstP = {
 //
 // [EOF]
 //
+
