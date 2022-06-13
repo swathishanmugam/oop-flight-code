@@ -12,7 +12,6 @@ void ACSMonitor::execute()
     rtObj.rtU.angularvelocity[1] = sfr::imu::gyro_y * 3.14159 / 180.0;
     rtObj.rtU.angularvelocity[2] = sfr::imu::gyro_z * 3.14159 / 180.0;
     IMUOffset(sfr::temperature::temp_c, sfr::battery::voltage, sfr::acs::pwmX, sfr::acs::pwmY, sfr::acs::pwmZ);
-    /*above should still be pwmX 2 3*/
     rtObj.rtU.Bfield_body[0] = sfr::imu::mag_x;
     rtObj.rtU.Bfield_body[1] = sfr::imu::mag_y;
     rtObj.rtU.Bfield_body[2] = sfr::imu::mag_z;
@@ -107,18 +106,18 @@ void ACSMonitor::IMUOffset(float temp, float voltage, float pwmX, float pwmY, fl
     /*******************************************/
 
     /*Total Soft Iron Offsets*/
-    float xoffset = volX_ox * pwmX_oX+ volY_ox * pwmY_ox + volZ_ox * pwmZ_ox + temp_x
-    float yoffset = volX_oy * pwmX_oy + volY_oy * pwmY_oy + volZ_oy * pwmZ_oy + temp_y
-    float yoffset = volX_oz * pwmX_oz + volY_oz * pwmY_oz + volZ_oz * pwmZ_oz + temp_z
+    float xoffset = volX_ox * pwmX_ox+ volY_ox * pwmY_ox + volZ_ox * pwmZ_ox + temp_x; 
+    float yoffset = volX_oy * pwmX_oy + volY_oy * pwmY_oy + volZ_oy * pwmZ_oy + temp_y; 
+    float zoffset = volX_oz * pwmX_oz + volY_oz * pwmY_oz + volZ_oz * pwmZ_oz + temp_z; 
     /*******************************************/
     /*Add in Hard-Iron Offsets*/
-    xoffset += -13.65
-    yoffset += 36.058
-    zoffset += 6.928
+    xoffset += -13.65; 
+    yoffset += 36.058; 
+    zoffset += 6.928; 
     /*******************************************/
     /* Finally, adjust magnetometer readings*/
-    mag_x -= xoffset
-    mag_y -= yoffset
-    mag_z -= zoffset
+    sfr::imu::mag_x -= xoffset; 
+    sfr::imu::mag_x -= yoffset; 
+    sfr::imu::mag_x -= zoffset; 
 
 }

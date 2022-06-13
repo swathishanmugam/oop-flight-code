@@ -1,5 +1,5 @@
 #include "ACSControlTask.hpp"
-#include "cstdlib.h"
+
 ACSControlTask::ACSControlTask(unsigned int offset)
     : TimedControlTask<void>(offset)
 {
@@ -27,11 +27,11 @@ void ACSControlTask::ACSWrite(int torqorder, float current, int out1, int out2, 
 {
     int PWM = current2PWM(abs(current));
     if (PWMpin == constants::acs::xPWMpin) {
-        sfr::acs::pwm1 = PWM;
+        sfr::acs::pwmX = PWM;
     } else if (PWMpin == constants::acs::yPWMpin) {
-        sfr::acs::pwm2 = PWM;
+        sfr::acs::pwmY = PWM;
     } else if (PWMpin == constants::acs::zPWMpin) {
-        sfr::acs::pwm3 = PWM;
+        sfr::acs::pwmZ = PWM;
     }
 
     if (PWM == 0) {
