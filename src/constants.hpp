@@ -63,6 +63,7 @@ namespace constants {
         constexpr uint8_t end_of_command_upload_flag1 = 0;
         constexpr uint8_t end_of_command_upload_flag2 = 250;
 
+        // Op Code Headers 2-Bytes
         constexpr uint8_t mission_mode[opcode_len] = {0x00, 0x00};
         constexpr uint8_t burnwire_arm[opcode_len] = {0x01, 0x00};
         constexpr uint8_t burnwire_fire[opcode_len] = {0x02, 0x00};
@@ -88,6 +89,10 @@ namespace constants {
         constexpr uint8_t fault_check_solar_current[opcode_len] = {0xF9, 0xFF};
         constexpr uint8_t fault_check_voltage[opcode_len] = {0xFA, 0xFF};
 
+        // SFR Value Override Op Code Range (Starts at 256)
+        constexpr uint8_t sfr_override_range_start[opcode_len] = {0x00, 0x01};
+
+        // First Argument Payload 4-Bytes
         constexpr uint8_t initialization[arg1_len] = {0x00, 0x00, 0x00, 0x00};
         constexpr uint8_t low_power[arg1_len] = {0x01, 0x00, 0x00, 0x00};
         constexpr uint8_t deployment[arg1_len] = {0x02, 0x00, 0x00, 0x00};
@@ -106,6 +111,7 @@ namespace constants {
 
         constexpr uint8_t no_arg_2[arg2_len] = {0x00, 0x00, 0x00, 0x00};
 
+        // Assembled Standard Commands
         constexpr uint8_t mission_mode_low_power[command_len] = {
             mission_mode[0], mission_mode[1],
             low_power[0], low_power[1], low_power[2], low_power[3],

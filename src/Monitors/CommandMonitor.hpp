@@ -8,6 +8,7 @@ class CommandMonitor : public TimedControlTask<void>
 public:
     CommandMonitor(unsigned int offset);
     void execute();
+    bool execute_sfr_data_override(RockblockCommand command);
     void dispatch_change_mission_mode();
     void dispatch_change_true_false(bool &value, uint32_t to_value);
     void dispatch_change_temperature_mode();

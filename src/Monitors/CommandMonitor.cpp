@@ -1,5 +1,6 @@
 #include "CommandMonitor.hpp"
 #include "NormalReportMonitor.hpp"
+#include "sfr.hpp"
 
 CommandMonitor::CommandMonitor(unsigned int offset)
     : TimedControlTask<void>(offset)
@@ -11,6 +12,16 @@ void CommandMonitor::execute()
     if (sfr::rockblock::waiting_command) {
         while (!sfr::rockblock::processed_commands.empty()) {
             RockblockCommand command = sfr::rockblock::processed_commands.front();
+
+            // Direct Edit of SFR Values
+            uint16_t sfr_edit_start = get_decimal_opcode(constants::rockblock::sfr_override_range_start);
+            uint16_t sfr_edit_end = sfr_edit_start + sfr::overrideable::n_overridable;
+            if (command.f_opcode >= sfr_edit_start && command.f_opcode <= sfr_edit_end) {
+                execute_sfr_data_override(command);
+                sfr::rockblock::waiting_command = false;
+                return;
+            }
+
             bool mag_x_average_isValid = sfr::imu::mag_x_average->is_valid();
             bool mag_y_average_isValid = sfr::imu::mag_y_average->is_valid();
             bool mag_z_average_isValid = sfr::imu::mag_z_average->is_valid();
@@ -71,6 +82,52 @@ void CommandMonitor::execute()
         }
         sfr::rockblock::waiting_command = false;
     }
+}
+
+bool CommandMonitor::execute_sfr_data_override(RockblockCommand command)
+{
+    // Get Range of OP Codes for SFR Override
+    uint16_t sfr_edit_start = get_decimal_opcode(constants::rockblock::sfr_override_range_start);
+    uint16_t op_code = command.f_opcode;
+
+    // TODO Use Arg 2 for Error Checking
+
+    // Override Boolean Values
+    uint16_t op_code_range_start = sfr_edit_start;
+    if (op_code >= op_code_range_start && op_code <= op_code_range_start + sfr::overrideable::n_bools) {
+        if (command.f_arg_1 <= UINT8_MAX) {
+            bool *ptr = (bool *)sfr::overrideable::editable_bools[op_code - op_code_range_start];
+            *ptr = (bool)command.f_arg_1;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Override Integer Values
+    op_code_range_start += sfr::overrideable::n_bools;
+    if (op_code >= op_code_range_start && op_code <= op_code_range_start + sfr::overrideable::n_ints) {
+        if (command.f_arg_1 <= UINT16_MAX) {
+            int *ptr = (int *)sfr::overrideable::editable_ints[op_code - op_code_range_start];
+            *ptr = (int)command.f_arg_1;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Override Float Values
+    op_code_range_start += sfr::overrideable::n_ints;
+    if (op_code >= op_code_range_start && op_code <= op_code_range_start + sfr::overrideable::n_floats) {
+        float *ptr = (float *)sfr::overrideable::editable_floats[op_code - op_code_range_start];
+        *ptr = (float)command.f_arg_1;
+        return true;
+    }
+
+    // TODO Other Data Types
+
+    // Unrecognized SFR Edit Command
+    return false;
 }
 
 void CommandMonitor::dispatch_change_mission_mode()
