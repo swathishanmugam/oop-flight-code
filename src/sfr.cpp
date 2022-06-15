@@ -311,7 +311,8 @@ namespace sfr {
         float pwmZ = 0;
         simple_acs_type mag = simple_acs_type::x;
         unsigned long max_no_communication = 0;
-
+        acs_mode_type mode = acs_mode_type::detumble; 
+        
         float on_time = 5 * constants::time::one_minute;
         bool off = true;
 

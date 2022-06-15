@@ -95,8 +95,8 @@ namespace constants {
         constexpr uint8_t false_arg[arg1_len] = {0x00, 0x00, 0x00, 0x00};
         constexpr uint8_t active[arg1_len] = {0x01, 0x00, 0x00, 0x00};
         constexpr uint8_t inactive[arg1_len] = {0x00, 0x00, 0x00, 0x00};
-        constexpr uint8_t full[arg1_len] = {0x02, 0x00, 0x00, 0x00};
-        constexpr uint8_t simple[arg1_len] = {0x01, 0x00, 0x00, 0x00};
+        constexpr uint8_t detumble[arg1_len] = {0x02, 0x00, 0x00, 0x00};
+        constexpr uint8_t point[arg1_len] = {0x01, 0x00, 0x00, 0x00};
         constexpr uint8_t off[arg1_len] = {0x00, 0x00, 0x00, 0x00};
         constexpr uint8_t x[arg1_len] = {0x00, 0x00, 0x00, 0x00};
         constexpr uint8_t y[arg1_len] = {0x01, 0x00, 0x00, 0x00};
@@ -169,14 +169,14 @@ namespace constants {
             inactive[0], inactive[1], inactive[2], inactive[3],
             no_arg_2[0], no_arg_2[1], no_arg_2[2], no_arg_2[3]};
 
-        constexpr uint8_t acs_mode_full[command_len] = {
+        constexpr uint8_t acs_mode_detumble[command_len] = {
             acs_mode[0], acs_mode[1],
-            full[0], full[1], full[2], full[3],
+            detumble[0], detumble[1], detumble[2], detumble[3],
             no_arg_2[0], no_arg_2[1], no_arg_2[2], no_arg_2[3]};
 
-        constexpr uint8_t acs_mode_simple[command_len] = {
+        constexpr uint8_t acs_mode_point[command_len] = {
             acs_mode[0], acs_mode[1],
-            simple[0], simple[1], simple[2], simple[3],
+            point[0], point[1], point[2], point[3],
             no_arg_2[0], no_arg_2[1], no_arg_2[2], no_arg_2[3]};
 
         constexpr uint8_t acs_mode_off[command_len] = {
@@ -323,8 +323,8 @@ namespace constants {
             {camera_take_photo_false[0], camera_take_photo_false[1], camera_take_photo_false[2], camera_take_photo_false[3], camera_take_photo_false[4], camera_take_photo_false[5], camera_take_photo_false[6], camera_take_photo_false[7], camera_take_photo_false[8], camera_take_photo_false[9]},
             {temperature_mode_active[0], temperature_mode_active[1], temperature_mode_active[2], temperature_mode_active[3], temperature_mode_active[4], temperature_mode_active[5], temperature_mode_active[6], temperature_mode_active[7], temperature_mode_active[8], temperature_mode_active[9]},
             {temperature_mode_inactive[0], temperature_mode_inactive[1], temperature_mode_inactive[2], temperature_mode_inactive[3], temperature_mode_inactive[4], temperature_mode_inactive[5], temperature_mode_inactive[6], temperature_mode_inactive[7], temperature_mode_inactive[8], temperature_mode_inactive[9]},
-            {acs_mode_full[0], acs_mode_full[1], acs_mode_full[2], acs_mode_full[3], acs_mode_full[4], acs_mode_full[5], acs_mode_full[6], acs_mode_full[7], acs_mode_full[8], acs_mode_full[9]},
-            {acs_mode_simple[0], acs_mode_simple[1], acs_mode_simple[2], acs_mode_simple[3], acs_mode_simple[4], acs_mode_simple[5], acs_mode_simple[6], acs_mode_simple[7], acs_mode_simple[8], acs_mode_simple[9]},
+            {acs_mode_detumble[0], acs_mode_detumble[1], acs_mode_detumble[2], acs_mode_detumble[3], acs_mode_detumble[4], acs_mode_detumble[5], acs_mode_detumble[6], acs_mode_detumble[7], acs_mode_detumble[8], acs_mode_detumble[9]},
+            {acs_mode_point[0], acs_mode_point[1], acs_mode_point[2], acs_mode_point[3], acs_mode_point[4], acs_mode_point[5], acs_mode_point[6], acs_mode_point[7], acs_mode_point[8], acs_mode_point[9]},
             {acs_mode_off[0], acs_mode_off[1], acs_mode_off[2], acs_mode_off[3], acs_mode_off[4], acs_mode_off[5], acs_mode_off[6], acs_mode_off[7], acs_mode_off[8], acs_mode_off[9]},
             {fault_mode_active[0], fault_mode_active[1], fault_mode_active[2], fault_mode_active[3], fault_mode_active[4], fault_mode_active[5], fault_mode_active[6], fault_mode_active[7], fault_mode_active[8], fault_mode_active[9]},
             {fault_mode_inactive[0], fault_mode_inactive[1], fault_mode_inactive[2], fault_mode_inactive[3], fault_mode_inactive[4], fault_mode_inactive[5], fault_mode_inactive[6], fault_mode_inactive[7], fault_mode_inactive[8], fault_mode_inactive[9]},

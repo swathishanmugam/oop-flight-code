@@ -93,13 +93,13 @@ void CommandMonitor::dispatch_change_true_false(bool &value)
 
 void CommandMonitor::dispatch_change_acs_mode()
 {
-    /*if (sfr::rockblock::f_arg_1 == get_decimal_arg(constants::rockblock::full)) {
-        sfr::acs::mode = acs_mode_type::full;
-    } else if (sfr::rockblock::f_arg_1 == get_decimal_arg(constants::rockblock::simple)) {
-        sfr::acs::mode = acs_mode_type::simple;
+    if (sfr::rockblock::f_arg_1 == get_decimal_arg(constants::rockblock::detumble)) {
+        sfr::acs::mode = acs_mode_type::detumble;
+    } else if (sfr::rockblock::f_arg_1 == get_decimal_arg(constants::rockblock::point)) {
+        sfr::acs::mode = acs_mode_type::point;
     } else if (sfr::rockblock::f_arg_1 == get_decimal_arg(constants::rockblock::off)) {
         sfr::acs::mode = acs_mode_type::off;
-    }*/
+    }
 }
 
 void CommandMonitor::dispatch_change_fault_mode()

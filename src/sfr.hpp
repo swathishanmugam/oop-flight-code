@@ -18,6 +18,7 @@
 #include "Modes/rockblock_mode_type.enum"
 #include "Modes/sensor_mode_type.enum"
 #include "Modes/simple_acs_type.enum"
+#include "Modes/acs_mode_type.enum"
 #include "Phase.hpp"
 #include "Pins.hpp"
 #include "RockblockSimulator.hpp"
@@ -294,6 +295,8 @@ namespace sfr {
         extern unsigned long max_no_communication;
         extern float on_time;
         extern bool off; 
+
+        extern acs_mode_type mode; 
 
         extern float alpha_angle;
 
