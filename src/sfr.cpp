@@ -314,6 +314,34 @@ namespace sfr {
 
         float on_time = 5 * constants::time::one_minute;
         bool off = true;
+
+        float alpha_angle = 45;
+
+        //kane damper constants
+        double kane_damper_c = 0.00001;
+
+        double kane_Id = 0.196;
+        //
+        //magnetorqueer hardware constants
+        double ampfactor = 13.5;
+
+        double csarea = 4E-5;
+
+        double num_loops = 500;
+
+        double max_current = 0.25;
+        //
+        //Altitude of orbit in km
+        float altitude = 400;
+        //
+        //desired angular velocities below
+        double wdx = 0;
+
+        double wdy = 0;
+
+        double wdz = 1;
+        //
+
     } // namespace acs
     namespace battery {
         float voltage = 0.0;

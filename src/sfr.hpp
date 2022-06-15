@@ -5,6 +5,7 @@
 #include "Control Tasks/BurnwireControlTask.hpp"
 #include "Control Tasks/EEPROMControlTask.hpp"
 #include "Control Tasks/TimedControlTask.hpp"
+#include "math.h"
 #include "MissionManager.hpp"
 #include "MissionMode.hpp"
 #include "Modes/burnwire_mode_type.enum"
@@ -292,8 +293,33 @@ namespace sfr {
         extern simple_acs_type mag;
         extern unsigned long max_no_communication;
         extern float on_time;
+        extern bool off; 
 
-        extern bool off;
+        extern float alpha_angle;
+
+        //kane damper constants
+        extern double kane_damper_c;
+
+        extern double kane_Id;
+        //
+        //magnetorqueer hardware constants
+        extern double ampfactor;
+
+        extern double csarea;
+
+        extern double num_loops;
+
+        extern double max_current;
+        //
+        //Altitude of orbit in km
+        extern float altitude;
+        //
+        //desired angular velocities below
+        extern double wdx;
+
+        extern double wdy;
+
+        extern double wdz;
     } // namespace acs
     namespace battery {
         extern float voltage;
