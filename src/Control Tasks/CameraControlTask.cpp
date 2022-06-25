@@ -1,5 +1,9 @@
 #include "CameraControlTask.hpp"
 
+/**
+ * Create a CameraControlTask object.
+ * @brief Default constructor.
+ */
 CameraControlTask::CameraControlTask(unsigned int offset)
     : TimedControlTask<void>(offset), adaCam(&Serial5)
 {

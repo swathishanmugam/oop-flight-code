@@ -1,9 +1,18 @@
 #include "CameraReportMonitor.hpp"
+
+/**
+ * Create a CameraReportMonitor object.
+ * @brief Default constructor.
+ */
 CameraReportMonitor::CameraReportMonitor(unsigned int offset)
     : TimedControlTask<void>(offset)
 {
 }
 
+
+/**
+ * @brief Called every main controll loop. Determine if camera report should be created a populate SFR accordingly.
+ */ 
 void CameraReportMonitor::execute()
 {
     // Get a requested fragment
@@ -11,25 +20,39 @@ void CameraReportMonitor::execute()
         create_camera_report(sfr::camera::fragment_number_requested, sfr::camera::serial_requested);
         sfr::camera::fragment_requested = false;
     }
+
     // Prepare data from an image taken for downlink
     else if (sfr::camera::report_downlinked == true && sfr::camera::images_written != 0) {
+
 #ifdef VERBOSE
         Serial.println("Report monitor started");
         Serial.println("Current serial: " + String(sfr::camera::current_serial));
         Serial.println("Current fragment: " + String(sfr::camera::fragment_number));
 #endif
+
+        // An image has been completely downlinked- reset flag
         if (sfr::camera::full_image_written == true || sfr::camera::fragment_number == 0) {
             sfr::camera::full_image_written = false;
         }
+
+        // Create camera report
         create_camera_report(sfr::camera::fragment_number, sfr::camera::current_serial);
+
+        // Image has been completely downlinked
         if (sfr::camera::fragment_number == sfr::rockblock::camera_max_fragments[sfr::camera::current_serial]) {
+            // Image fragments from this image can now be requested
             add_possible_command();
+
+            // New image will have next serial number
             sfr::camera::current_serial += 1;
+
         } else {
+            // Still downlinking the same image- just increase fragment number
             sfr::camera::fragment_number++;
         }
     }
 
+    // Image has been completely downlinked
     if (sfr::camera::fragment_number == sfr::rockblock::camera_max_fragments[sfr::camera::current_serial]) {
         sfr::camera::report_ready = false;
         sfr::camera::fragment_number = 0;
@@ -99,6 +122,7 @@ void CameraReportMonitor::create_camera_report(int fragment_number, uint8_t seri
 void CameraReportMonitor::add_possible_command()
 {
     // convert endianness
+    // TODO- we are no longer swapping endianness
     uint32_t converted_serial = __builtin_bswap32(sfr::camera::current_serial);
 
     // add opcode to possible commands
