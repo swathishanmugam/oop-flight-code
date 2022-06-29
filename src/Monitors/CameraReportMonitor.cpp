@@ -16,14 +16,13 @@ CameraReportMonitor::CameraReportMonitor(unsigned int offset)
 void CameraReportMonitor::execute()
 {
     // Get a requested fragment
-    if (sfr::camera::report_downlinked == true && sfr::camera::fragment_requested == true) {
+    if (sfr::camera::report_downlinked && sfr::camera::fragment_requested) {
         create_camera_report(sfr::camera::fragment_number_requested, sfr::camera::serial_requested);
         sfr::camera::fragment_requested = false;
     }
 
     // Prepare data from an image taken for downlink
-    else if (sfr::camera::report_downlinked == true && sfr::camera::images_written != 0) {
-
+    else if (sfr::camera::report_downlinked && sfr::camera::images_written) {
 #ifdef VERBOSE
         Serial.println("Report monitor started");
         Serial.println("Current serial: " + String(sfr::camera::current_serial));
