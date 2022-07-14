@@ -13,6 +13,7 @@ void setup()
     // test
     Serial.begin(9600);
     delay(5000);
+    DataLogSetup();
     pin_control_task.execute();
 }
 

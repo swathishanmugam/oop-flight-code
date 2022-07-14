@@ -2,6 +2,7 @@
 #define ACS_MONITOR_HPP_
 
 #include "sfr.hpp"
+#include "DataLogging.hpp"
 
 class ACSMonitor : public TimedControlTask<void>
 {

@@ -6,11 +6,13 @@ ACSMonitor::ACSMonitor(unsigned int offset)
     using namespace sfr::acs; 
     starshotObj.initialize(kane_damper_c, kane_Id,
     ampfactor, max_current, csarea,
-    num_loops, wdx, wdy, wdz); 
+    num_loops, wdx, wdy, wdz);
 }
 
 void ACSMonitor::execute()
+
 {
+    //loading adjusted values into the ACS model
     starshotObj.rtU.w[0] = sfr::imu::gyro_x * 3.14159 / 180.0;
     starshotObj.rtU.w[1] = sfr::imu::gyro_y * 3.14159 / 180.0;
     starshotObj.rtU.w[2] = sfr::imu::gyro_z * 3.14159 / 180.0;
@@ -47,6 +49,8 @@ void ACSMonitor::execute()
             sfr::acs::currentZ = 0;
             break;
     }
+
+    DataLog();
 }
 
 void ACSMonitor::IMUOffset(float temp, float voltage, float pwmX, float pwmY, float pwmZ)
