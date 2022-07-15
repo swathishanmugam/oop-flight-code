@@ -5,22 +5,43 @@ ACSMonitor::ACSMonitor(unsigned int offset)
 {
     using namespace sfr::acs; 
     starshotObj.initialize(kane_damper_c, kane_Id,
-    ampfactor, max_current, csarea,
-    num_loops, wdx, wdy, wdz);
+    ampfactor, max_current, csarea,num_loops, wdx, wdy, wdz);
+    //call();
 }
 
 void ACSMonitor::execute()
 
 {
+    // Serial.print("ACS called: ");
+    // Serial.println(IsCalled());
     //loading adjusted values into the ACS model
-    starshotObj.rtU.w[0] = sfr::imu::gyro_x * 3.14159 / 180.0;
-    starshotObj.rtU.w[1] = sfr::imu::gyro_y * 3.14159 / 180.0;
-    starshotObj.rtU.w[2] = sfr::imu::gyro_z * 3.14159 / 180.0;
     IMUOffset(sfr::temperature::temp_c, sfr::battery::voltage, sfr::acs::pwmX, sfr::acs::pwmY, sfr::acs::pwmZ);
-    starshotObj.rtU.magneticfield[0] = sfr::imu::mag_x;
-    starshotObj.rtU.magneticfield[1] = sfr::imu::mag_y;
-    starshotObj.rtU.magneticfield[2] = sfr::imu::mag_z;
+    float w_x = sfr::imu::gyro_x * 3.14159 / 180.0;
+    float w_y = sfr::imu::gyro_y * 3.14159 / 180.0;
+    float w_z = sfr::imu::gyro_z * 3.14159 / 180.0;
+
+    float mag_x = sfr::imu::mag_x;
+    float mag_y = sfr::imu::mag_y;
+    float mag_z = sfr::imu::mag_z;
+
+
+    starshotObj.rtU.w[0] = w_x;
+    starshotObj.rtU.w[1] = w_y;
+    starshotObj.rtU.w[2] = w_z;
+
+    starshotObj.rtU.magneticfield[0] = mag_x;
+    starshotObj.rtU.magneticfield[1] = mag_y;
+    starshotObj.rtU.magneticfield[2] = mag_z;
+
     starshotObj.step();
+
+    float de_I_x = starshotObj.rtY.detumble[0];
+    float de_I_y = starshotObj.rtY.detumble[1];
+    float de_I_z = starshotObj.rtY.detumble[2];
+
+    float pt_I_x = starshotObj.rtY.point[0];
+    float pt_I_y = starshotObj.rtY.point[1];
+    float pt_I_z = starshotObj.rtY.point[2];
 
     /*if(sfr::fault::check_acc_x && sfr::fault::check_acc_y && sfr::acs::mode != acs_mode_type::off){
         if(sfr::imu::gyro_x < 0 && sfr::imu::gyro_y < 0){
@@ -31,17 +52,16 @@ void ACSMonitor::execute()
         }
     }
     */
-
     switch(sfr::acs::mode){
         case acs_mode_type::detumble:
-            sfr::acs::currentX = starshotObj.rtY.detumble[0];
-            sfr::acs::currentY = starshotObj.rtY.detumble[1];
-            sfr::acs::currentZ = starshotObj.rtY.detumble[2];
+            sfr::acs::currentX = de_I_x;
+            sfr::acs::currentY = de_I_y;
+            sfr::acs::currentZ = de_I_z;
             break;
         case acs_mode_type::point:
-            sfr::acs::currentX = starshotObj.rtY.point[0];
-            sfr::acs::currentY = starshotObj.rtY.point[1];
-            sfr::acs::currentZ = starshotObj.rtY.point[2];
+            sfr::acs::currentX = pt_I_x;
+            sfr::acs::currentY = pt_I_y;
+            sfr::acs::currentZ = pt_I_z;
             break;
         case acs_mode_type::off:
             sfr::acs::currentX = 0;
@@ -49,8 +69,8 @@ void ACSMonitor::execute()
             sfr::acs::currentZ = 0;
             break;
     }
-
-    DataLog();
+    float ACSData[12] = {w_x,w_y,w_z,mag_x,mag_y,mag_z,de_I_x,de_I_y,de_I_z,pt_I_x,pt_I_y,pt_I_z};
+    DataLog(ACSData, 12);
 }
 
 void ACSMonitor::IMUOffset(float temp, float voltage, float pwmX, float pwmY, float pwmZ)
