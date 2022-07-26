@@ -420,12 +420,12 @@ void StarshotACSModelClass::step()
   rtY.point[1] = 0.0;
 
   // Saturate: '<S3>/Saturation5'
-  if (rtb_Gain[2] > magtorqhwvalue) {
+  if (rtb_Gain[2] > maximum_current) {
     // Outport: '<Root>/point'
-    rtY.point[2] = magtorqhwvalue;
-  } else if (rtb_Gain[2] < -magtorqhwvalue) {
+    rtY.point[2] = maximum_current;
+  } else if (rtb_Gain[2] < -maximum_current) {
     // Outport: '<Root>/point'
-    rtY.point[2] = -magtorqhwvalue;
+    rtY.point[2] = -maximum_current;
   } else {
     // Outport: '<Root>/point'
     rtY.point[2] = rtb_Gain[2];

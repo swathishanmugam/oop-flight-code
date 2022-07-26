@@ -1,5 +1,4 @@
 #include "IMUMonitor.hpp"
-
 // eliminate virtual classes and camera monitor.cpp
 // adapt to new initialization process
 // if in case 2 for two minutes, it has failed initialization
@@ -69,7 +68,7 @@ bool check_repeated_values(std::deque<float> buffer)
         return false;
     }
 
-    int first_val = buffer[0];
+    float first_val = buffer[0];
     for (float val : buffer) {
         if (first_val != val) {
             return false;
@@ -79,6 +78,60 @@ bool check_repeated_values(std::deque<float> buffer)
     return true;
 }
 
+float get_sd(std::deque<float> buffer)
+{
+    float sum = 0;
+    float mean = 0;
+    float sd = 0;
+    for (float val : buffer) {
+        sum += val;
+    }
+    mean = sum / buffer.size();
+
+    for (int i = 0; i < buffer.size(); i++) {
+        sd += pow(buffer[i] - mean, 2);
+    }
+    sd = sqrt(sd / (buffer.size() - 1));
+    return sd;
+}
+
+//Epanechnikov kernel for smooth
+// return the weight for the given t=|x-x_0|/window_size
+float Ep_kernel(float t)
+{
+    if (fabs(t) <= 1) {
+        return 0.75*(1 -  pow(t, 2));
+    } else {
+        return 0;
+    }
+}
+// float Gaussian_kernel(float t, float sigma, float mu)
+// {
+    
+// }
+
+// Epanechnikov kernel smoothing
+// return the smoothed value of the current window
+float Epa_smooth(std::deque<float> buffer)
+{
+    int window_size = buffer.size();
+    int x_0 = window_size / 2+1;
+    float weight = 0;
+    float weight_data_sum = 0;
+    float weight_sum = 0;
+    float sigma = get_sd(buffer);
+
+    for (int i = 0; i < window_size; i++) {
+        weight = Ep_kernel(fabs(i - x_0) / window_size);
+        Serial.print(String(i) +": raw buffer value: ");
+        Serial.println(buffer.at(i));
+        weight_data_sum += weight * buffer.at(i);
+        weight_sum += weight;
+    }
+    Serial.println("Epa_smooth value: ");
+    Serial.println(weight_data_sum / weight_sum);
+    return weight_data_sum / weight_sum;
+}
 void IMUMonitor::capture_imu_values()
 {
     sensors_event_t accel, mag, gyro, temp;
@@ -86,8 +139,6 @@ void IMUMonitor::capture_imu_values()
 
     imu.setupMag(imu.LSM9DS1_MAGGAIN_8GAUSS);
     imu.setupGyro(imu.LSM9DS1_GYROSCALE_245DPS);
-
-    // Save most recent readings
 
     sfr::imu::mag_x = mag.magnetic.x;
     sfr::imu::mag_y = mag.magnetic.y;
@@ -102,61 +153,87 @@ void IMUMonitor::capture_imu_values()
     sfr::imu::gyro_z_value->set_value(sfr::imu::gyro_z);
 
     // Add reading to buffer
+    int collection_cycle = 3;
+    for (int i = 0; i < collection_cycle; i++) {
+        sfr::imu::mag_x_buffer.push_front(mag.magnetic.x);
+        sfr::imu::mag_y_buffer.push_front(mag.magnetic.y);
+        sfr::imu::mag_z_buffer.push_front(mag.magnetic.z);
 
-    sfr::imu::mag_x_buffer.push_front(mag.magnetic.x);
-    sfr::imu::mag_y_buffer.push_front(mag.magnetic.y);
-    sfr::imu::mag_z_buffer.push_front(mag.magnetic.z);
-
-    sfr::imu::gyro_x_buffer.push_front(gyro.gyro.x);
-    sfr::imu::gyro_y_buffer.push_front(gyro.gyro.y);
-    sfr::imu::gyro_z_buffer.push_front(gyro.gyro.z);
+        sfr::imu::gyro_x_buffer.push_front(gyro.gyro.x);
+        sfr::imu::gyro_y_buffer.push_front(gyro.gyro.y);
+        sfr::imu::gyro_z_buffer.push_front(gyro.gyro.z);
+    }
 
     // Remove old readings
 
     if (sfr::imu::mag_x_buffer.size() > constants::sensor::collect) {
-        sfr::imu::mag_x_buffer.pop_back();
+        for (int i = 0; i < collection_cycle; i++) {
+            sfr::imu::mag_x_buffer.pop_back();
+        }
     }
     if (sfr::imu::mag_y_buffer.size() > constants::sensor::collect) {
-        sfr::imu::mag_y_buffer.pop_back();
+        for (int i = 0; i < collection_cycle; i++) {
+            sfr::imu::mag_y_buffer.pop_back();
+        }
     }
     if (sfr::imu::mag_z_buffer.size() > constants::sensor::collect) {
-        sfr::imu::mag_z_buffer.pop_back();
+        for (int i = 0; i < collection_cycle; i++) {
+            sfr::imu::mag_z_buffer.pop_back();
+        }
     }
     if (sfr::imu::gyro_x_buffer.size() > constants::sensor::collect) {
-        sfr::imu::gyro_x_buffer.pop_back();
+        for (int i = 0; i < collection_cycle; i++) {
+            sfr::imu::gyro_x_buffer.pop_back();
+        }
     }
     if (sfr::imu::gyro_y_buffer.size() > constants::sensor::collect) {
-        sfr::imu::gyro_y_buffer.pop_back();
+        for (int i = 0; i < collection_cycle; i++) {
+            sfr::imu::gyro_y_buffer.pop_back();
+        }
     }
     if (sfr::imu::gyro_z_buffer.size() > constants::sensor::collect) {
-        sfr::imu::gyro_z_buffer.pop_back();
+        for (int i = 0; i < collection_cycle; i++) {
+            sfr::imu::gyro_z_buffer.pop_back();
+        }
     }
+
 
     // Check for repeated/invalid readings, calculate sums and average
 
-    if (check_repeated_values(sfr::imu::mag_x_buffer)) {
-        sfr::imu::mag_x_average->set_invalid();
-    } else {
-        sfr::imu::mag_x_average->set_valid();
-        float mag_x_sum = std::accumulate(sfr::imu::mag_x_buffer.begin(), sfr::imu::mag_x_buffer.end(), 0.0);
-        sfr::imu::mag_x_average->set_value(mag_x_sum / sfr::imu::mag_x_buffer.size());
-    }
+    // if (check_repeated_values(sfr::imu::mag_x_buffer)) {
+    //     sfr::imu::mag_x_average->set_invalid();
+    // } else {
+    //     sfr::imu::mag_x_average->set_valid();
+    //     sfr::imu::mag_x_average->set_value(Epa_smooth(sfr::imu::mag_x_buffer));
+    //     //float mag_x_sum = std::accumulate(sfr::imu::mag_x_buffer.begin(), sfr::imu::mag_x_buffer.end(), 0.0);
+    //     //sfr::imu::mag_x_average->set_value(mag_x_sum / sfr::imu::mag_x_buffer.size());
+    // }
 
-    if (check_repeated_values(sfr::imu::mag_y_buffer)) {
-        sfr::imu::mag_y_average->set_invalid();
-    } else {
-        sfr::imu::mag_y_average->set_valid();
-        float mag_y_sum = std::accumulate(sfr::imu::mag_y_buffer.begin(), sfr::imu::mag_y_buffer.end(), 0.0);
-        sfr::imu::mag_y_average->set_value(mag_y_sum / sfr::imu::mag_y_buffer.size());
-    }
+    sfr::imu::mag_x_average->set_valid();
+    sfr::imu::mag_y_average->set_valid();
+    sfr::imu::mag_z_average->set_valid();
+    
+    sfr::imu::mag_x_average->set_value(Epa_smooth(sfr::imu::mag_x_buffer));
+    sfr::imu::mag_y_average->set_value(Epa_smooth(sfr::imu::mag_y_buffer));
+    sfr::imu::mag_z_average->set_value(Epa_smooth(sfr::imu::mag_z_buffer));
 
-    if (check_repeated_values(sfr::imu::mag_z_buffer)) {
-        sfr::imu::mag_z_average->set_invalid();
-    } else {
-        sfr::imu::mag_z_average->set_valid();
-        float mag_z_sum = std::accumulate(sfr::imu::mag_z_buffer.begin(), sfr::imu::mag_z_buffer.end(), 0.0);
-        sfr::imu::mag_z_average->set_value(mag_z_sum / sfr::imu::mag_z_buffer.size());
-    }
+    // if (check_repeated_values(sfr::imu::mag_y_buffer)) {
+    //     sfr::imu::mag_y_average->set_invalid();
+    // } else {
+    //     sfr::imu::mag_y_average->set_valid();
+    //     sfr::imu::mag_y_average->set_value(Epa_smooth(sfr::imu::mag_y_buffer));
+    //     //float mag_y_sum = std::accumulate(sfr::imu::mag_y_buffer.begin(), sfr::imu::mag_y_buffer.end(), 0.0);
+    //     //sfr::imu::mag_y_average->set_value(mag_y_sum / sfr::imu::mag_y_buffer.size());
+    // }
+
+    // if (check_repeated_values(sfr::imu::mag_z_buffer)) {
+    //     sfr::imu::mag_z_average->set_invalid();
+    // } else {
+    //     sfr::imu::mag_z_average->set_valid();
+    //     sfr::imu::mag_z_average->set_value(Epa_smooth(sfr::imu::mag_z_buffer));
+    //         // float mag_z_sum = std::accumulate(sfr::imu::mag_z_buffer.begin(), sfr::imu::mag_z_buffer.end(), 0.0);
+    //         // sfr::imu::mag_z_average->set_value(mag_z_sum / sfr::imu::mag_z_buffer.size());
+    // }
 
     if (check_repeated_values(sfr::imu::gyro_x_buffer)) {
         sfr::imu::gyro_x_average->set_invalid();

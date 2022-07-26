@@ -259,6 +259,7 @@ namespace sfr {
         SensorReading *mag_x_average = new SensorReading(fault_index_type::mag_x, 0.0, false);
         SensorReading *mag_y_average = new SensorReading(fault_index_type::mag_y, 0.0, false);
         SensorReading *mag_z_average = new SensorReading(fault_index_type::mag_z, 0.0, false);
+        
         SensorReading *gyro_x_average = new SensorReading(fault_index_type::gyro_x, 0.0, false);
         SensorReading *gyro_y_average = new SensorReading(fault_index_type::gyro_y, 0.0, false);
         SensorReading *gyro_z_average = new SensorReading(fault_index_type::gyro_z, 0.0, false);
@@ -309,7 +310,9 @@ namespace sfr {
         float pwmX = 0;
         float pwmY = 0;
         float pwmZ = 0;
-        simple_acs_type mag = simple_acs_type::x;
+        //may change if want to use low power
+        float simpleCurrent=max_current;
+        simple_acs_type mag = simple_acs_type::z;
         unsigned long max_no_communication = 0;
         acs_mode_type mode = acs_mode_type::detumble; 
         

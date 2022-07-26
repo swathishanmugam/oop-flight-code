@@ -23,6 +23,7 @@ void DataLogSetup(){
         return;
     }
     Serial.println("SD Card initialization done.");
+    SD.remove("Data.txt");
     DataFile = SD.open("Data.txt", FILE_WRITE);
     DataFile.println("w_x, w_y, w_z, mag_x, mag_y, mag_z, de_I_x, de_I_y, de_I_z, pt_I_x, pt_I_y, pt_I_z");
     DataFile.close();

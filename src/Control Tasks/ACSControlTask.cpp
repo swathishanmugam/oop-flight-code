@@ -7,6 +7,7 @@ ACSControlTask::ACSControlTask(unsigned int offset)
 
 void ACSControlTask::execute()
 {
+    Serial.println("writing to torquer");
     ACSWrite(constants::acs::xtorqorder, sfr::acs::currentX, constants::acs::xout1, constants::acs::xout2, constants::acs::xPWMpin);
     ACSWrite(constants::acs::ytorqorder, sfr::acs::currentY, constants::acs::yout1, constants::acs::yout2, constants::acs::yPWMpin);
     ACSWrite(constants::acs::ztorqorder, sfr::acs::currentZ, constants::acs::zout1, constants::acs::zout2, constants::acs::zPWMpin);
@@ -14,18 +15,20 @@ void ACSControlTask::execute()
 
 int ACSControlTask::current2PWM(float current)
 {
-    if (int(633.5 * pow(abs(current), 0.6043) + 8.062) < 0)
+    if (int(633.5 * pow(fabs(current), 0.6043) + 8.062) < 8.062)
         return 0;
-    else if (int(633.5 * pow(abs(current), 0.6043) + 8.062) > 255)
+    else if (int(633.5 * pow(fabs(current), 0.6043) + 8.062) > 255)
         return 255;
     else
-        return int(633.5 * pow(abs(current), 0.6043) + 8.062);
+        return int(633.5 * pow(fabs(current), 0.6043) + 8.062);
 }
 
 
 void ACSControlTask::ACSWrite(int torqorder, float current, int out1, int out2, int PWMpin)
 {
-    int PWM = current2PWM(abs(current));
+    int PWM = current2PWM(current);
+    Serial.println("PWM: ");
+    Serial.println(PWM);
     if (PWMpin == constants::acs::xPWMpin) {
         sfr::acs::pwmX = PWM;
     } else if (PWMpin == constants::acs::yPWMpin) {

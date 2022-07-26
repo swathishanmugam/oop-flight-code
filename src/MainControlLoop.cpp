@@ -36,11 +36,10 @@ void MainControlLoop::execute()
     faults::fault_1 = 0;
     faults::fault_2 = 0;
     faults::fault_3 = 0;
+    sfr::imu::sample  = true;
 
     clock_manager.execute();
-
     mission_manager.execute_on_time();
-
     acs_monitor.execute_on_time();
     battery_monitor.execute_on_time();
     button_monitor.execute_on_time();

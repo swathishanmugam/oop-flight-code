@@ -288,6 +288,7 @@ namespace sfr {
         extern float currentX;
         extern float currentY;
         extern float currentZ;
+        extern float simpleCurrent;
         extern float pwmX;
         extern float pwmY;
         extern float pwmZ;

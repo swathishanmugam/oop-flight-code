@@ -5,7 +5,8 @@ enum class acs_mode_type : unsigned char
 {
     detumble = 0,
     point,
-    off
+    simple,
+    off,
 };
 
 #endif

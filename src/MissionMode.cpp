@@ -4,14 +4,18 @@
 void boot_initialization()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 
 void Boot::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void Boot::dispatch()
@@ -22,7 +26,9 @@ void Boot::dispatch()
 void AliveSignal::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void AliveSignal::dispatch()
@@ -34,7 +40,9 @@ void AliveSignal::dispatch()
 void LowPowerAliveSignal::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void LowPowerAliveSignal::dispatch()
@@ -46,8 +54,11 @@ void LowPowerAliveSignal::dispatch()
 void DetumbleSpin::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = false;
+    sfr::acs::mode = acs_mode_type::detumble;
     sfr::imu::sample = true;
+
+    digitalWrite(constants::acs::STBXYpin,HIGH);
+    digitalWrite(constants::acs::STBZpin,HIGH);
 }
 void DetumbleSpin::dispatch()
 {
@@ -65,7 +76,9 @@ void DetumbleSpin::dispatch()
 void LowPowerDetumbleSpin::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void LowPowerDetumbleSpin::dispatch()
@@ -77,8 +90,10 @@ void LowPowerDetumbleSpin::dispatch()
 void Normal::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = false;
+    sfr::acs::mode = acs_mode_type::point;
     sfr::imu::sample = true;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, HIGH);
 }
 void Normal::dispatch()
 {
@@ -89,7 +104,9 @@ void Normal::dispatch()
 void LowPower::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void LowPower::dispatch()
@@ -100,7 +117,9 @@ void LowPower::dispatch()
 void Transmit::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void Transmit::dispatch()
@@ -112,7 +131,7 @@ void Transmit::dispatch()
 void NormalDeployment::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = false;
+    sfr::acs::mode = acs_mode_type::point;
     sfr::imu::sample = true;
 }
 void NormalDeployment::dispatch()
@@ -124,7 +143,9 @@ void NormalDeployment::dispatch()
 void TransmitDeployment::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void TransmitDeployment::dispatch()
@@ -136,7 +157,9 @@ void TransmitDeployment::dispatch()
 void LowPowerDeployment::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void LowPowerDeployment::dispatch()
@@ -147,8 +170,10 @@ void LowPowerDeployment::dispatch()
 void NormalArmed::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = false;
+    sfr::acs::mode = acs_mode_type::point;
     sfr::imu::sample = true;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, HIGH);
 }
 void NormalArmed::dispatch()
 {
@@ -159,7 +184,9 @@ void NormalArmed::dispatch()
 void TransmitArmed::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void TransmitArmed::dispatch()
@@ -171,7 +198,9 @@ void TransmitArmed::dispatch()
 void LowPowerArmed::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void LowPowerArmed::dispatch()
@@ -182,8 +211,10 @@ void LowPowerArmed::dispatch()
 void NormalInSun::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = false;
+    sfr::acs::mode = acs_mode_type::point;
     sfr::imu::sample = true;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, HIGH);
 }
 void NormalInSun::dispatch()
 {
@@ -194,7 +225,9 @@ void NormalInSun::dispatch()
 void TransmitInSun::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void TransmitInSun::dispatch()
@@ -206,7 +239,9 @@ void TransmitInSun::dispatch()
 void LowPowerInSun::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void LowPowerInSun::dispatch()
@@ -221,7 +256,9 @@ void LowPowerInSun::dispatch()
 void VoltageFailureInSun::transition_to()
 {
     sfr::rockblock::sleep_mode = false;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void VoltageFailureInSun::dispatch()
@@ -234,7 +271,9 @@ void VoltageFailureInSun::dispatch()
 void BootCamera::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = false;
 }
 void BootCamera::dispatch()
@@ -244,7 +283,9 @@ void BootCamera::dispatch()
 void MandatoryBurns::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = true;
 }
 void MandatoryBurns::dispatch()
@@ -254,7 +295,9 @@ void MandatoryBurns::dispatch()
 void RegularBurns::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = true;
 }
 void RegularBurns::dispatch()
@@ -264,7 +307,9 @@ void RegularBurns::dispatch()
 void Photo::transition_to()
 {
     sfr::rockblock::sleep_mode = true;
-    sfr::acs::off = true;
+    sfr::acs::mode = acs_mode_type::off;
+    digitalWrite(constants::acs::STBXYpin, LOW);
+    digitalWrite(constants::acs::STBZpin, LOW);
     sfr::imu::sample = true;
 }
 void Photo::dispatch() {}
