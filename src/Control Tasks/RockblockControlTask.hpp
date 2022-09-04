@@ -11,6 +11,7 @@ class RockblockControlTask : public TimedControlTask<void>
 public:
     RockblockControlTask(unsigned int offset);
     void execute();
+
 private:
     void dispatch_standby();
     void dispatch_send_at();
@@ -38,11 +39,11 @@ private:
     void transition_to(rockblock_mode_type new_mode);
     bool check_valid_command(RawRockblockCommand raw_command);
     void check_timeout();
-    #ifndef SIMULATOR
-        HardwareSerial serial = Serial1;
-    #else
-        RockblockSimulator serial;
-    #endif
+#ifndef SIMULATOR
+    HardwareSerial serial = Serial1;
+#else
+    RockblockSimulator serial;
+#endif
 };
 
 #endif

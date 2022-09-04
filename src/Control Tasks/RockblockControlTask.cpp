@@ -1,6 +1,6 @@
 #include "RockblockControlTask.hpp"
-#include "sfr.hpp"
 #include "Pins.hpp"
+#include "sfr.hpp"
 
 RockblockControlTask::RockblockControlTask(unsigned int offset)
     : TimedControlTask<void>(offset)

@@ -14,8 +14,8 @@
 #include "SFRField.hpp"
 #include "SensorReading.hpp"
 #include "constants.hpp"
-#include <deque>
 #include <RockblockCommand.hpp>
+#include <deque>
 
 namespace sfr {
     namespace stabilization {
@@ -243,7 +243,6 @@ namespace sfr {
         SFRField<uint16_t> downlink_report_type((uint16_t)report_type::normal_report, 2116);
         SFRField<uint16_t> mode((uint16_t)rockblock_mode_type::send_at, 2117);
 
-        std::deque<uint8_t> imu_report;
     } // namespace rockblock
     namespace imu {
         // OP Codes 2200
@@ -279,7 +278,7 @@ namespace sfr {
         boolean report_written = false;
         boolean report_downlinked = true;
         boolean report_ready = true;
-        
+
     } // namespace imu
     namespace temperature {
         // OP Codes 2300
