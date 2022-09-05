@@ -292,6 +292,17 @@ namespace sfr {
         SensorReading *temp_c_average = new SensorReading(fault_index_type::temp_c, 0.0, false);
         bool in_sun = false;
     } // namespace temperature
+    namespace gps {
+        float latitude = 0.0;
+        float longitude = 0.0;
+        float milliseconds = 0.0;
+        std::deque<float> latitude_buffer;
+        std::deque<float> longitude_buffer;
+        std::deque<float> milliseconds_buffer;
+        SensorReading *latitude_buffer = new SensorReading(fault_index_type::latitude, 0.0, false);
+        SensorReading *longitude_buffer = new SensorReading(fault_index_type::longitude, 0.0, false);
+        SensorReading *milliseconds_buffer = new SensorReading(fault_index_type::milliseconds, 0.0, false);
+    } // namespace gps
     namespace current {
         float solar_current = 0.0;
         std::deque<float> solar_current_buffer;
