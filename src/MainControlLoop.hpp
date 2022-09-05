@@ -20,6 +20,7 @@
 #include "Monitors/PhotoresistorMonitor.hpp"
 #include "Monitors/RockblockReportMonitor.hpp"
 #include "Monitors/TemperatureMonitor.hpp"
+#include "Monitors/GPSMonitor.hpp"
 #include "sfr.hpp"
 
 class MainControlLoop : ControlTask<void>
@@ -41,6 +42,7 @@ protected:
     PhotoresistorMonitor photoresistor_monitor;
     RockblockReportMonitor rockblock_report_monitor;
     TemperatureMonitor temperature_monitor;
+    GPSMonitor gps_monitor;
 
     ACSControlTask acs_control_task;
     BurnwireControlTask burnwire_control_task;
