@@ -19,6 +19,7 @@ MainControlLoop::MainControlLoop()
       photoresistor_monitor(constants::timecontrol::photoresistor_monitor_offset),
       rockblock_report_monitor(constants::timecontrol::rockblock_report_monitor_offset),
       temperature_monitor(constants::timecontrol::temperature_monitor_offset),
+      gps_monitor(constants::timecontrol::gps_monitor_offset),
       acs_control_task(constants::timecontrol::acs_control_task_offset),
       burnwire_control_task(constants::timecontrol::burnwire_control_task_offset),
       camera_control_task(constants::timecontrol::camera_control_task_offset),
@@ -55,6 +56,7 @@ void MainControlLoop::execute()
     photoresistor_monitor.execute_on_time();
     rockblock_report_monitor.execute_on_time();
     temperature_monitor.execute_on_time();
+    gps_monitor.execute_on_time();
     acs_control_task.execute_on_time();
     burnwire_control_task.execute_on_time();
     camera_control_task.execute_on_time();
