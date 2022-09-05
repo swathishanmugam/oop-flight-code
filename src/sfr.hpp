@@ -25,6 +25,7 @@
 #include "SensorReading.hpp"
 #include "constants.hpp"
 #include <Adafruit_LSM9DS1.h>
+#include <Adafruit_GPS.h>
 #include <Adafruit_VC0706.h>
 #include <SD.h>
 #include <StarshotACS0.h>
@@ -274,6 +275,21 @@ namespace sfr {
         extern SensorReading *temp_c_average;
         extern bool in_sun;
     } // namespace temperature
+    namespace gps {
+        extern sensor_mode_type mode;
+        
+        extern float latitude;
+        extern float longitude;
+        extern float milliseconds;
+        
+        extern std::deque<float> latitude_buffer;
+        extern std::deque<float> longitude_buffer;
+        extern std::deque<float> milliseconds_buffer;
+        
+        extern SensorReading *latitude_average;
+        extern SensorReading *longitude_average;
+        extern SensorReading *milliseconds_average;
+    }// namespace gps
     namespace current {
         extern float solar_current;
         extern std::deque<float> solar_current_buffer;
